@@ -1,0 +1,7 @@
+
+cordova run android --release -- --keystore="c:/renkbulma.keystore" --storePassword=123456 --alias=renkbulma --password=123456
+
+keytool -genkeypair -v -keystore c:\renkbulma.keystore -alias renkbulma -keyalg RSA -keysize 2048 -validity 10000
+
+git remote set-url origin https://<USERNAME>:<PASSWORD>@bitbucket.org/path/to/repo.git
+##burası apk imzalama işleri ile ilgili.

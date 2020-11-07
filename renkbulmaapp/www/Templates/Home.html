@@ -1,0 +1,30 @@
+<md-content>
+    <md-card class="CardBg">
+        <div>
+            <div class="Header">
+                <h1>Merhaba Çocuk Adam</h1>
+
+
+                <div>
+                    <b>Şimdi <b>{{WantedColour.name}}</b> isimli rengi seçer misin?</b>
+                </div>
+                <div><i class="fa fa-volume-up ask fa-3x button" ng-click="Ask(WantedColour.soundPath)"
+                        aria-hidden="true"></i>
+                </div>
+            </div>
+            <div>
+                <span ng-click="PickColour(color.name)" ng-repeat="color in RandomColors"
+                    ng-style="{'background':color.hex}" class="ColorButton button"></span>
+
+            </div>
+            <div class="Win animate__animated animate__flip animate__repeat-3" ng-show="Game.Win">
+                <h2>Kazandın Çocuk Adam</h2>
+            </div>
+            <div class="Loose animate__animated animate__backInDown animate__repeat-3" ng-show="Game.Loose==true">
+                <h2>Tekrar Dene Çocuk Adam</h2>
+            </div>
+
+
+        </div>
+    </md-card>
+</md-content>
