@@ -29,9 +29,9 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function () {
-        var app = angular.module("renkbulmaApp", ['ngMaterial', 'ngSanitize', 'ngLocale', 'LocalStorageModule', 'ui.router', 'angular.filter']);
+        var app = angular.module("renkbulmaApp", ['ngMaterial', 'ngAnimate', 'ngSanitize', 'ngLocale', 'LocalStorageModule', 'ui.router', 'angular.filter']);
 
-        app.controller("MainController", function ($scope) {
+        app.controller("MainController", function ($scope, $animate) {
             setTimeout(function () {
                 if (AdMob) {
                     if (/(android)/i.test(navigator.userAgent)) { // for android & amazon-fireos
@@ -101,19 +101,24 @@ var app = {
             { name: "Lacivert", hex: "#3f51b5", soundPath: cordova.file.applicationDirectory + "www/audio/lacivert.m4a" },
             { name: "Turuncu", hex: "#ff9800", soundPath: cordova.file.applicationDirectory + "www/audio/turuncu.m4a" }];
 
-            $scope.RandomColors = [];
-            while ($scope.RandomColors.length != 6) {
-                var color = {};
-                var colorIndex = Math.floor(Math.random() * Math.floor(10));
-                color = angular.copy($scope.Colors[colorIndex]);
-                console.log(color);
-                var isColorExist = false;
-                isColorExist = $scope.RandomColors.findIndex(x => x.name == color.name) == -1 ? false : true;
-                if (isColorExist == false) {
-                    $scope.RandomColors.push(color);
+            $scope.PrepareQuestion = function () {
+                $animate.addClass(angular.element(document.body), "animate__animated animate__zoomInDown").then(() => {
+                    $animate.removeClass(angular.element(document.body), "animate__animated animate__zoomInDown")
+                })
+                $scope.RandomColors = [];
+                while ($scope.RandomColors.length != 6) {
+                    var color = {};
+                    var colorIndex = Math.floor(Math.random() * Math.floor(10));
+                    color = angular.copy($scope.Colors[colorIndex]);
+                    console.log(color);
+                    var isColorExist = false;
+                    isColorExist = $scope.RandomColors.findIndex(x => x.name == color.name) == -1 ? false : true;
+                    if (isColorExist == false) {
+                        $scope.RandomColors.push(color);
+                    }
                 }
+                $scope.WantedColour = $scope.RandomColors[Math.floor(Math.random() * Math.floor(6))];
             }
-            $scope.WantedColour = $scope.RandomColors[Math.floor(Math.random() * Math.floor(6))];
             $scope.PickColour = function (name) {
                 $(".Loose").removeClass("animate__animated animate__backInDown animate__repeat-3");
                 $(".Win").removeClass("animate__animated animate__backInDown animate__repeat-3");
@@ -126,15 +131,24 @@ var app = {
                     if (name == $scope.WantedColour.name) {
                         $scope.Game.Win = true;
                         $scope.Game.Loose = false;
-                        $(".Win").addClass("animate__animated animate__backInDown animate__repeat-3");
+                        $animate.addClass(angular.element($(".Win")), "animate__animated animate__backInDown animate__repeat-3").then(() => {
+                            console.log("bitti")
+                            $scope.Game.Win = false;
+                            $scope.Game.Loose = false;
+                            $animate.removeClass(angular.element($(".Win")), "animate__animated animate__backInDown animate__repeat-3")
+                            $scope.PrepareQuestion();
+                        });
                     } else {
                         $scope.Game.Win = false;
                         $scope.Game.Loose = true;
-                        $(".Loose").addClass("animate__animated animate__backInDown animate__repeat-3");
+                        $animate.addClass(angular.element($(".Loose")), "animate__animated animate__backInDown animate__repeat-3").then(() => {
+                            console.log("bitti")
+                        });
                     }
                     $scope.$apply()
                 }, 300);
             }
+            $scope.PrepareQuestion();
         })
 
         app.config(function (localStorageServiceProvider, $stateProvider, $urlRouterProvider,

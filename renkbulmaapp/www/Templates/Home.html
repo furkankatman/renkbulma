@@ -6,18 +6,18 @@
 
 
                 <div>
-                    <b>Şimdi <b>{{WantedColour.name}}</b> isimli rengi seçer misin?</b>
+                    <b>Şimdi <b class="colorWanted">{{WantedColour.name}}</b> isimli rengi seçer misin?</b>
                 </div>
                 <div><i class="fa fa-volume-up ask fa-3x button" ng-click="Ask(WantedColour.soundPath)"
                         aria-hidden="true"></i>
                 </div>
             </div>
-            <div>
+            <div style="display: flex;flex-wrap: wrap;justify-content: center;">
                 <span ng-click="PickColour(color.name)" ng-repeat="color in RandomColors"
                     ng-style="{'background':color.hex}" class="ColorButton button"></span>
 
             </div>
-            <div class="Win animate__animated animate__flip animate__repeat-3" ng-show="Game.Win">
+            <div class="Win animate__animated animate__flip animate__repeat-3" ng-hide="!Game.Win" ng-show="Game.Win">
                 <h2>Kazandın Çocuk Adam</h2>
             </div>
             <div class="Loose animate__animated animate__backInDown animate__repeat-3" ng-show="Game.Loose==true">
